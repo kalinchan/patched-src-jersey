@@ -54,6 +54,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -86,7 +87,6 @@ import org.glassfish.jersey.message.internal.Statuses;
 
 import jersey.repackaged.com.google.common.base.Predicates;
 import jersey.repackaged.com.google.common.collect.Maps;
-import jersey.repackaged.com.google.common.util.concurrent.MoreExecutors;
 
 /**
  * Default client transport connector using {@link HttpURLConnection}.
@@ -290,18 +290,16 @@ public class HttpUrlConnector implements Connector {
 
     @Override
     public Future<?> apply(final ClientRequest request, final AsyncConnectorCallback callback) {
-        return MoreExecutors.sameThreadExecutor().submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    callback.response(_apply(request));
-                } catch (IOException ex) {
-                    callback.failure(new ProcessingException(ex));
-                } catch (Throwable t) {
-                    callback.failure(t);
-                }
-            }
-        });
+        try {
+            ClientResponse response = apply(request);
+            callback.response(response);
+            return CompletableFuture.completedFuture(response);
+        } catch (Throwable t) {
+            callback.failure(t);
+            CompletableFuture<Object> future = new CompletableFuture<>();
+            future.completeExceptionally(t);
+            return future;
+        }
     }
 
     @Override

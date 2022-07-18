@@ -42,6 +42,8 @@ package org.glassfish.jersey.examples.rx.agent;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -108,7 +110,7 @@ public class ListenableFutureAgentResource {
                     public void onFailure(final Throwable t) {
                         async.resume(t);
                     }
-                });
+                }, Executors.newSingleThreadExecutor());
     }
 
     private ListenableFuture<AgentResponse> visited(final AgentResponse response) {
@@ -129,7 +131,7 @@ public class ListenableFutureAgentResource {
 
                 return future;
             }
-        });
+        }, Executors.newSingleThreadExecutor());
     }
 
     private ListenableFuture<AgentResponse> recommended(final AgentResponse response) {

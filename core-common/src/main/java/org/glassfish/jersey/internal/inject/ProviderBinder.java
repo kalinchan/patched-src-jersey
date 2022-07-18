@@ -42,7 +42,10 @@ package org.glassfish.jersey.internal.inject;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.RuntimeType;
 
@@ -58,9 +61,6 @@ import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.AliasDescriptor;
 import org.glassfish.hk2.utilities.BuilderHelper;
 import org.glassfish.hk2.utilities.binding.ScopedBindingBuilder;
-
-import jersey.repackaged.com.google.common.base.Predicate;
-import jersey.repackaged.com.google.common.collect.Sets;
 
 /**
  * Class used for registration of the custom providers into HK2 service locator.
@@ -261,25 +261,22 @@ public class ProviderBinder {
                                      final DynamicConfiguration dynamicConfiguration) {
         final Predicate<ContractProvider> filter = new Predicate<ContractProvider>() {
             @Override
-            public boolean apply(final ContractProvider input) {
-                return ComponentBag.EXCLUDE_EMPTY.apply(input) && ComponentBag.EXCLUDE_META_PROVIDERS.apply(input);
+            public boolean test(final ContractProvider input) {
+                return ComponentBag.EXCLUDE_EMPTY.test(input) && ComponentBag.EXCLUDE_META_PROVIDERS.test(input);
             }
         };
 
         // Bind provider classes except for pure meta-providers and providers with empty contract models (e.g. resources)
-        Set<Class<?>> classes = Sets.newLinkedHashSet(componentBag.getClasses(filter));
+        Set<Class<?>> classes = new LinkedHashSet<>(componentBag.getClasses(filter));
         if (constrainedTo != null) {
-            classes = Sets.filter(classes, new Predicate<Class<?>>() {
-                @Override
-                public boolean apply(final Class<?> componentClass) {
-                    return Providers.checkProviderRuntime(
+            classes = classes.stream()
+                    .filter(componentClass -> Providers.checkProviderRuntime(
                             componentClass,
                             componentBag.getModel(componentClass),
                             constrainedTo,
                             registeredClasses == null || !registeredClasses.contains(componentClass),
-                            false);
-                }
-            });
+                            false))
+                    .collect(Collectors.toSet());
         }
         for (final Class<?> providerClass : classes) {
             final ContractProvider model = componentBag.getModel(providerClass);
@@ -289,18 +286,17 @@ public class ProviderBinder {
         // Bind pure provider instances except for pure meta-providers and providers with empty contract models (e.g. resources)
         Set<Object> instances = componentBag.getInstances(filter);
         if (constrainedTo != null) {
-            instances = Sets.filter(instances, new Predicate<Object>() {
-                @Override
-                public boolean apply(final Object component) {
-                    final Class<?> componentClass = component.getClass();
-                    return Providers.checkProviderRuntime(
-                            componentClass,
-                            componentBag.getModel(componentClass),
-                            constrainedTo,
-                            registeredClasses == null || !registeredClasses.contains(componentClass),
-                            false);
-                }
-            });
+            instances = instances.stream()
+                    .filter(component -> {
+                        final Class<?> componentClass = component.getClass();
+                        return Providers.checkProviderRuntime(
+                                componentClass,
+                                componentBag.getModel(componentClass),
+                                constrainedTo,
+                                registeredClasses == null || !registeredClasses.contains(componentClass),
+                                false);
+                    })
+                    .collect(Collectors.toSet());
         }
         for (final Object provider : instances) {
             final ContractProvider model = componentBag.getModel(provider.getClass());
