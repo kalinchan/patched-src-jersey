@@ -47,8 +47,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.glassfish.jersey.internal.LocalizationMessages;
+import org.glassfish.jersey.internal.guava.Preconditions;
 
-import jersey.repackaged.com.google.common.base.Preconditions;
 
 /**
  * A committing output stream with optional serialized entity buffering functionality

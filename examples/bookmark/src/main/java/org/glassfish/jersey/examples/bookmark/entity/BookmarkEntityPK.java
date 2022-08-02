@@ -44,8 +44,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import jersey.repackaged.com.google.common.base.MoreObjects;
-
 /**
  * Primary Key class BookmarkEntityPK for entity class BookmarkEntity.
  *
@@ -164,7 +162,8 @@ public class BookmarkEntityPK implements Serializable {
      */
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("bmid", bmid).add("userid", userid).toString();
-    }
+        return "UserEntity{"
+                + "userid='" + userid + '\''
+                + '}';    }
 
 }

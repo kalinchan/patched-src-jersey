@@ -39,6 +39,7 @@
  */
 package org.glassfish.jersey.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.Configuration;
@@ -46,8 +47,6 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.glassfish.jersey.message.internal.TracingLogger;
 import org.glassfish.jersey.server.internal.ServerTraceEvent;
-
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * Utilities for tracing support.
@@ -57,7 +56,7 @@ import jersey.repackaged.com.google.common.collect.Lists;
  */
 public final class TracingUtils {
 
-    private static final List<String> SUMMARY_HEADERS = Lists.newArrayList();
+    private static final List<String> SUMMARY_HEADERS = new ArrayList<>();
 
     static {
         SUMMARY_HEADERS.add(HttpHeaders.ACCEPT.toLowerCase());

@@ -39,6 +39,7 @@
  */
 package org.glassfish.jersey.moxy.json;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.ext.ContextResolver;
@@ -49,8 +50,6 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.eclipse.persistence.oxm.XMLConstants;
 
-import jersey.repackaged.com.google.common.collect.Maps;
-
 /**
  * Configuration class for MOXy JSON provider.
  *
@@ -58,8 +57,8 @@ import jersey.repackaged.com.google.common.collect.Maps;
  */
 public final class MoxyJsonConfig {
 
-    private final Map<String, Object> marshallerProperties = Maps.newHashMap();
-    private final Map<String, Object> unmarshallerProperties = Maps.newHashMap();
+    private final Map<String, Object> marshallerProperties = new HashMap<>();
+    private final Map<String, Object> unmarshallerProperties = new HashMap<>();
 
     /**
      * Create a new configuration for {@link org.eclipse.persistence.jaxb.rs.MOXyJsonProvider} and initialize default properties.

@@ -51,9 +51,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.glassfish.jersey.internal.guava.Preconditions;
 import org.glassfish.jersey.uri.internal.UriTemplateParser;
-
-import jersey.repackaged.com.google.common.base.Preconditions;
 
 /**
  * A URI template.

@@ -41,14 +41,13 @@
 package org.glassfish.jersey.servlet;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.glassfish.jersey.internal.PropertiesDelegate;
 
-import jersey.repackaged.com.google.common.collect.Iterators;
-import jersey.repackaged.com.google.common.collect.Lists;
+
 
 /**
  * @author Martin Matula
@@ -67,13 +66,8 @@ class ServletPropertiesDelegate implements PropertiesDelegate {
 
     @Override
     public Collection<String> getPropertyNames() {
-        return Lists.newLinkedList(new Iterable<String>() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public Iterator<String> iterator() {
-                return Iterators.forEnumeration(request.getAttributeNames());
-            }
-        });
+        //noinspection unchecked
+        return Collections.list(request.getAttributeNames());
     }
 
     @Override

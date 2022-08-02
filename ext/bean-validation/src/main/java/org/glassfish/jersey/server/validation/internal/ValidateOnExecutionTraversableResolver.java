@@ -44,14 +44,13 @@ import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.AccessController;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.validation.Path;
 import javax.validation.TraversableResolver;
 
 import org.glassfish.jersey.internal.util.ReflectionHelper;
-
-import jersey.repackaged.com.google.common.collect.Maps;
 
 /**
  * {@link TraversableResolver Traversable resolver} used for handling {@link javax.validation.executable.ValidateOnExecution}
@@ -63,7 +62,7 @@ class ValidateOnExecutionTraversableResolver implements TraversableResolver {
 
     private final TraversableResolver delegate;
 
-    private final ConcurrentMap<String, Method> propertyToMethod = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, Method> propertyToMethod = new ConcurrentHashMap<>();
 
     private final ValidateOnExecutionHandler validateOnExecutionHandler;
 

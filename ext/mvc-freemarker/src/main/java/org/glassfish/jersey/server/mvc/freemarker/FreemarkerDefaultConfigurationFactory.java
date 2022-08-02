@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import freemarker.cache.ClassTemplateLoader;
@@ -53,7 +54,6 @@ import freemarker.cache.TemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
 import freemarker.template.Configuration;
 import org.jvnet.hk2.annotations.Optional;
-import jersey.repackaged.com.google.common.collect.Lists;
 
 
 /**
@@ -77,7 +77,7 @@ public class FreemarkerDefaultConfigurationFactory implements FreemarkerConfigur
         super();
 
         // Create different loaders.
-        final List<TemplateLoader> loaders = Lists.newArrayList();
+        final List<TemplateLoader> loaders = new ArrayList<>();
         if (servletContext != null) {
             loaders.add(new WebappTemplateLoader(servletContext));
         }

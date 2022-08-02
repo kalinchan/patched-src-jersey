@@ -41,6 +41,7 @@
 package org.glassfish.jersey.media.multipart.internal;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -65,8 +66,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import jersey.repackaged.com.google.common.collect.Sets;
-
 /**
  * Test cases for inspecting an {@code FormDataMultiPart} entity in a {@code RequestFilter} and following injection of this
  * entity into a resource method.
@@ -83,7 +82,7 @@ public class FormDataMultiPartBufferTest extends MultiPartJerseyTest {
 
     @Override
     protected Set<Class<?>> getResourceClasses() {
-        return Sets.<Class<?>>newHashSet(ConsumesFormDataResource.class);
+        return Collections.singleton(ConsumesFormDataResource.class);
     }
 
     @Provider

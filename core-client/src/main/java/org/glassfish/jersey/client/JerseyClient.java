@@ -64,9 +64,8 @@ import org.glassfish.jersey.internal.ServiceFinder;
 import org.glassfish.jersey.internal.util.collection.UnsafeValue;
 import org.glassfish.jersey.internal.util.collection.Values;
 
-import static jersey.repackaged.com.google.common.base.Preconditions.checkNotNull;
-import static jersey.repackaged.com.google.common.base.Preconditions.checkState;
-
+import static org.glassfish.jersey.internal.guava.Preconditions.checkNotNull;
+import static org.glassfish.jersey.internal.guava.Preconditions.checkState;
 /**
  * Jersey implementation of {@link javax.ws.rs.client.Client JAX-RS Client}
  * contract.

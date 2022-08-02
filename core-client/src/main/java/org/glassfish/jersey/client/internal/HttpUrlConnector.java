@@ -56,9 +56,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
@@ -85,8 +87,7 @@ import org.glassfish.jersey.internal.util.collection.Values;
 import org.glassfish.jersey.message.internal.OutboundMessageContext;
 import org.glassfish.jersey.message.internal.Statuses;
 
-import jersey.repackaged.com.google.common.base.Predicates;
-import jersey.repackaged.com.google.common.collect.Maps;
+
 
 /**
  * Default client transport connector using {@link HttpURLConnection}.
@@ -291,15 +292,14 @@ public class HttpUrlConnector implements Connector {
     @Override
     public Future<?> apply(final ClientRequest request, final AsyncConnectorCallback callback) {
         try {
-            ClientResponse response = apply(request);
-            callback.response(response);
-            return CompletableFuture.completedFuture(response);
+            callback.response(_apply(request));
+        } catch (IOException ex) {
+            callback.failure(new ProcessingException(ex));
         } catch (Throwable t) {
             callback.failure(t);
-            CompletableFuture<Object> future = new CompletableFuture<>();
-            future.completeExceptionally(t);
-            return future;
         }
+
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -406,7 +406,14 @@ public class HttpUrlConnector implements Connector {
         }
 
         ClientResponse responseContext = new ClientResponse(status, request, resolvedRequestUri);
-        responseContext.headers(Maps.filterKeys(uc.getHeaderFields(), Predicates.notNull()));
+        responseContext.headers(
+                uc.getHeaderFields()
+                        .entrySet()
+                        .stream()
+                        .filter(stringListEntry -> stringListEntry.getKey() != null)
+                        .collect(Collectors.toMap(Map.Entry::getKey,
+                                Map.Entry::getValue))
+        );
         responseContext.setEntityStream(getInputStream(uc));
 
         return responseContext;

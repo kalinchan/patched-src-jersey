@@ -49,6 +49,7 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.security.AccessController;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
@@ -57,8 +58,6 @@ import javax.xml.bind.JAXBElement;
 
 import org.glassfish.jersey.internal.util.ReflectionHelper;
 import org.glassfish.jersey.internal.util.collection.DataStructures;
-
-import jersey.repackaged.com.google.common.collect.Maps;
 
 /**
  * SPI utility methods for entity filtering.
@@ -154,7 +153,7 @@ public final class FilteringHelper {
      * @return non-null map of field-accessor mappings.
      */
     public static Map<String, Method> getPropertyMethods(final Class<?> clazz, final boolean isGetter) {
-        final Map<String, Method> methods = Maps.newHashMap();
+        final Map<String, Method> methods = new HashMap<>();
 
         for (final Method method : AccessController.doPrivileged(ReflectionHelper.getDeclaredMethodsPA(clazz))) {
             if ((isGetter && ReflectionHelper.isGetter(method))

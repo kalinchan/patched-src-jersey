@@ -57,10 +57,9 @@ import java.util.logging.Logger;
 import javax.ws.rs.ServiceUnavailableException;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
-
+import org.glassfish.jersey.internal.guava.ThreadFactoryBuilder;
 import org.glassfish.jersey.internal.util.ExtendedLogger;
 
-import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 /**
  * Client for reading and processing {@link InboundEvent incoming Server-Sent Events}.

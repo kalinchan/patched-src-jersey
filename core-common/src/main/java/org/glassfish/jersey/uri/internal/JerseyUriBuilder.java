@@ -44,6 +44,7 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.AccessController;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,13 +54,11 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 
 import org.glassfish.jersey.internal.LocalizationMessages;
+import org.glassfish.jersey.internal.guava.InetAddresses;
 import org.glassfish.jersey.internal.util.ReflectionHelper;
 import org.glassfish.jersey.internal.util.collection.MultivaluedStringMap;
 import org.glassfish.jersey.uri.UriComponent;
 import org.glassfish.jersey.uri.UriTemplate;
-
-import jersey.repackaged.com.google.common.collect.Maps;
-import jersey.repackaged.com.google.common.net.InetAddresses;
 
 /**
  * A Jersey implementation of {@link UriBuilder}.
@@ -641,7 +640,7 @@ public class JerseyUriBuilder extends UriBuilder {
             throw new IllegalArgumentException(LocalizationMessages.PARAM_NULL("value"));
         }
 
-        final Map<String, Object> templateValues = Maps.newHashMap();
+        final Map<String, Object> templateValues = new HashMap<>();
         templateValues.put(name, value);
         resolveTemplates(templateValues, encode, encodeSlashInPath);
         return this;

@@ -41,6 +41,7 @@ package org.glassfish.jersey.client;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * {@code JerseyWebTarget} implementation unit tests.
@@ -208,7 +208,7 @@ public class JerseyWebTargetTest {
         assertEquals("/path/a%2520%253F/*///b/", target.path("path/{a}/{b}").resolveTemplates(map,
                 false).getUri().toString());
 
-        List<Map<String, Object>> corruptedTemplateValuesList = Lists.<Map<String, Object>>newArrayList(
+        List<Map<String, Object>> corruptedTemplateValuesList = Arrays.asList(
                 null,
                 new HashMap<String, Object>() {{
                     put(null, "value");

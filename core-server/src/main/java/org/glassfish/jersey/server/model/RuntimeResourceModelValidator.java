@@ -40,6 +40,7 @@
 
 package org.glassfish.jersey.server.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,8 +52,6 @@ import org.glassfish.jersey.internal.Errors;
 import org.glassfish.jersey.message.MessageBodyWorkers;
 import org.glassfish.jersey.message.internal.MediaTypes;
 import org.glassfish.jersey.server.internal.LocalizationMessages;
-
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * Runtime resource model validator validating ambiguity of resource methods.
@@ -78,7 +77,7 @@ public class RuntimeResourceModelValidator extends AbstractResourceModelVisitor 
     }
 
     private void checkMethods(RuntimeResource resource) {
-        final List<ResourceMethod> resourceMethods = Lists.newArrayList(resource.getResourceMethods());
+        final List<ResourceMethod> resourceMethods = new ArrayList<>(resource.getResourceMethods());
         resourceMethods.addAll(resource.getResourceLocators());
         if (resourceMethods.size() >= 2) {
             for (ResourceMethod m1 : resourceMethods.subList(0, resourceMethods.size() - 1)) {

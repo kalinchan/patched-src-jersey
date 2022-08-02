@@ -44,16 +44,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.glassfish.jersey.internal.util.collection.Views;
 import org.glassfish.jersey.message.filtering.spi.EntityGraph;
 import org.glassfish.jersey.message.filtering.spi.ObjectGraph;
 import org.glassfish.jersey.message.filtering.spi.ScopeProvider;
-
-import jersey.repackaged.com.google.common.base.Function;
-import jersey.repackaged.com.google.common.collect.Maps;
-import jersey.repackaged.com.google.common.collect.Sets;
 
 /**
  * Default implementation of {@link ObjectGraph}.
@@ -91,8 +89,10 @@ final class ObjectGraphImpl implements ObjectGraph {
     public Set<String> getFields(final String parent) {
         final Set<String> childFilteringScopes = getFilteringScopes(parent);
         if (fields == null) {
-            fields = graph.getFields(Sets.union(childFilteringScopes, Collections.singleton(ScopeProvider.DEFAULT_SCOPE)));
-        }
+            fields = graph.getFields(
+                    Views.setUnionView(
+                            childFilteringScopes,
+                            Collections.singleton(ScopeProvider.DEFAULT_SCOPE)));        }
         return fields;
     }
 
@@ -109,8 +109,7 @@ final class ObjectGraphImpl implements ObjectGraph {
             final Map<String, Class<?>> contextSubgraphs = graph.getSubgraphs(childFilteringScopes);
             contextSubgraphs.putAll(graph.getSubgraphs(ScopeProvider.DEFAULT_SCOPE));
 
-            subgraphs = Maps.transformValues(contextSubgraphs, new Function<Class<?>, ObjectGraph>() {
-
+            subgraphs = Views.mapView(contextSubgraphs, new Function<Class<?>, ObjectGraph>() {
                 @Override
                 public ObjectGraph apply(final Class<?> clazz) {
                     final EntityGraph entityGraph = classToGraph.get(clazz);

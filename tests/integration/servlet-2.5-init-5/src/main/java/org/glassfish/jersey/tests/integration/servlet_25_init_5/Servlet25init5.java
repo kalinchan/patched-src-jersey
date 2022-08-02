@@ -39,12 +39,10 @@
  */
 package org.glassfish.jersey.tests.integration.servlet_25_init_5;
 
-import java.util.Set;
-
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-
-import jersey.repackaged.com.google.common.collect.Sets;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author Pavel Bucek (pavel.bucek at oracle.com)
@@ -54,6 +52,6 @@ public class Servlet25init5 extends Application{
     @SuppressWarnings({"unchecked"})
     @Override
     public Set<Class<?>> getClasses() {
-        return Sets.<Class<?>>newHashSet(HelloWorldResource.class);
+        return Collections.singleton(HelloWorldResource.class);
     }
 }

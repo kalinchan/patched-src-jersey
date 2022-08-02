@@ -39,11 +39,11 @@
  */
 package org.glassfish.jersey.tests.integration.jersey1883;
 
-import jersey.repackaged.com.google.common.collect.Sets;
+import java.util.Collections;
+import java.util.Set;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import java.util.Set;
 
 /**
  * Explicitly register {@code @Singleton} resource.
@@ -55,6 +55,6 @@ public class MyApplication extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-        return Sets.<Class<?>>newHashSet(NoLife.class);
+        return Collections.singleton(NoLife.class);
     }
 }

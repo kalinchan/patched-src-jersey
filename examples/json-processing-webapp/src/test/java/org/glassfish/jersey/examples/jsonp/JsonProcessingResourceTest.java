@@ -40,8 +40,11 @@
 package org.glassfish.jersey.examples.jsonp;
 
 import java.net.URI;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -62,15 +65,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import jersey.repackaged.com.google.common.collect.Lists;
-import jersey.repackaged.com.google.common.collect.Sets;
-
 /**
  * @author Michal Gajdos
  */
 public class JsonProcessingResourceTest extends JerseyTest {
 
-    private static final List<JsonObject> documents = Lists.newArrayList();
+    private static final List<JsonObject> documents = new ArrayList<>();
 
     static {
         documents.add(Json.createObjectBuilder()
@@ -175,7 +175,7 @@ public class JsonProcessingResourceTest extends JerseyTest {
     private void checkFilteredDocuments(final JsonArray filtered, final int size, final String... properties) {
         assertEquals(size, filtered.size());
 
-        final HashSet<String> strings = Sets.newHashSet(properties);
+        Set<String> strings = Arrays.stream(properties).collect(Collectors.toSet());
         for (final JsonObject document : filtered.getValuesAs(JsonObject.class)) {
             for (final String property : document.keySet()) {
                 assertTrue(strings.contains(property));

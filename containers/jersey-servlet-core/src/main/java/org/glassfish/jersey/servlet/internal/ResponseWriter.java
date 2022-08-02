@@ -44,6 +44,7 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -60,9 +61,6 @@ import org.glassfish.jersey.server.ContainerResponse;
 import org.glassfish.jersey.server.internal.JerseyRequestTimeoutHandler;
 import org.glassfish.jersey.server.spi.ContainerResponseWriter;
 import org.glassfish.jersey.servlet.spi.AsyncContextDelegate;
-
-import jersey.repackaged.com.google.common.util.concurrent.SettableFuture;
-
 /**
  * An internal implementation of {@link ContainerResponseWriter} for Servlet containers.
  * The writer depends on provided {@link AsyncContextDelegate} to support async functionality.
@@ -88,7 +86,7 @@ public class ResponseWriter implements ContainerResponseWriter {
      * If {@code true} method {@link HttpServletResponse#setStatus} is used over {@link HttpServletResponse#sendError}.
      */
     private final boolean configSetStatusOverSendError;
-    private final SettableFuture<ContainerResponse> responseContext;
+    private final CompletableFuture<ContainerResponse> responseContext;
     private final AsyncContextDelegate asyncExt;
 
     private final JerseyRequestTimeoutHandler requestTimeoutHandler;
@@ -113,7 +111,7 @@ public class ResponseWriter implements ContainerResponseWriter {
         this.configSetStatusOverSendError = configSetStatusOverSendError;
         this.response = response;
         this.asyncExt = asyncExt;
-        this.responseContext = SettableFuture.create();
+        this.responseContext = new CompletableFuture<>();
 
         this.requestTimeoutHandler = new JerseyRequestTimeoutHandler(this, timeoutTaskExecutor);
     }
@@ -139,7 +137,7 @@ public class ResponseWriter implements ContainerResponseWriter {
     @Override
     public OutputStream writeResponseStatusAndHeaders(final long contentLength, final ContainerResponse responseContext)
             throws ContainerException {
-        this.responseContext.set(responseContext);
+        this.responseContext.complete(responseContext);
 
         // first set the content length, so that if headers have an explicit value, it takes precedence over this one
         if (responseContext.hasEntity() && contentLength != -1 && contentLength < Integer.MAX_VALUE) {

@@ -60,6 +60,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.function.Function;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Cookie;
@@ -77,8 +78,6 @@ import javax.xml.transform.Source;
 import org.glassfish.jersey.internal.LocalizationMessages;
 import org.glassfish.jersey.internal.PropertiesDelegate;
 import org.glassfish.jersey.message.MessageBodyWorkers;
-
-import jersey.repackaged.com.google.common.base.Function;
 
 /**
  * Base inbound message context implementation.

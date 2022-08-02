@@ -40,12 +40,10 @@
 package org.glassfish.jersey.server.model.internal;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.glassfish.jersey.internal.Errors;
 import org.glassfish.jersey.server.model.ResourceModelIssue;
-
-import jersey.repackaged.com.google.common.base.Function;
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * Utility to transform {@link Errors.ErrorMessage error messages} to {@link ResourceModelIssue}s.
@@ -69,12 +67,9 @@ public class ModelErrors {
      * @return non-null list of resource model issues.
      */
     public static List<ResourceModelIssue> getErrorsAsResourceModelIssues(final boolean afterMark) {
-        return Lists.transform(Errors.getErrorMessages(afterMark), new Function<Errors.ErrorMessage, ResourceModelIssue>() {
-            @Override
-            public ResourceModelIssue apply(final Errors.ErrorMessage input) {
-                return new ResourceModelIssue(input.getSource(), input.getMessage(), input.getSeverity());
-            }
-        });
+        return Errors.getErrorMessages(afterMark).stream()
+                .map(input -> new ResourceModelIssue(input.getSource(), input.getMessage(), input.getSeverity()))
+                .collect(Collectors.toList());
     }
 
 }

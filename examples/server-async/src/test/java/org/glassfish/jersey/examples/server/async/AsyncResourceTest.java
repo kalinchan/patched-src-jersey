@@ -57,6 +57,7 @@ import java.util.logging.Logger;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
+import org.glassfish.jersey.internal.guava.ThreadFactoryBuilder;
 import org.glassfish.jersey.process.JerseyProcessingUncaughtExceptionHandler;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -65,8 +66,6 @@ import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 public class AsyncResourceTest extends JerseyTest {
 

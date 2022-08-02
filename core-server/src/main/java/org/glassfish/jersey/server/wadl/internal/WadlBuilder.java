@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,8 +72,6 @@ import com.sun.research.ws.wadl.Request;
 import com.sun.research.ws.wadl.Resource;
 import com.sun.research.ws.wadl.Resources;
 import com.sun.research.ws.wadl.Response;
-
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * This class implements the algorithm how the wadl is built for one or more {@link org.glassfish.jersey.server.model.Resource}
@@ -234,7 +233,7 @@ public class WadlBuilder {
                                     final org.glassfish.jersey.server.model.ResourceMethod resourceMethod,
                                     Map<String, Param> wadlResourceParams) {
         try {
-            final List<Parameter> requestParams = Lists.newLinkedList(resourceMethod.getInvocable().getParameters());
+            final List<Parameter> requestParams = new LinkedList<>(resourceMethod.getInvocable().getParameters());
             // Adding handler instance parameters to the list of potential request parameters.
             requestParams.addAll(resourceMethod.getInvocable().getHandler().getParameters());
 

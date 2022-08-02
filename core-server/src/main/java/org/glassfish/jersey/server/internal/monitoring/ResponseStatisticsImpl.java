@@ -46,8 +46,6 @@ import java.util.Map;
 
 import org.glassfish.jersey.server.monitoring.ResponseStatistics;
 
-import jersey.repackaged.com.google.common.collect.Maps;
-
 /**
  * Immutable response statistics.
  *
@@ -63,7 +61,7 @@ final class ResponseStatisticsImpl implements ResponseStatistics {
      */
     static class Builder {
 
-        private final Map<Integer, Long> responseCodesMap = Maps.newHashMap();
+        private final Map<Integer, Long> responseCodesMap = new HashMap<>();
         private Integer lastResponseCode = null;
 
         private ResponseStatisticsImpl cached = null;

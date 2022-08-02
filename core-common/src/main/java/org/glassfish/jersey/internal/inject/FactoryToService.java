@@ -42,7 +42,8 @@ package org.glassfish.jersey.internal.inject;
 
 import org.glassfish.hk2.api.Factory;
 
-import jersey.repackaged.com.google.common.base.Function;
+import java.util.function.Function;
+
 
 /**
  * Helper function converting a HK2 {@link Factory service factory} into the

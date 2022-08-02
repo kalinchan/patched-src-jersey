@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,8 +66,6 @@ import org.glassfish.jersey.internal.inject.ServiceLocatorSupplier;
 import org.glassfish.jersey.message.MessageBodyWorkers;
 
 import org.glassfish.hk2.api.ServiceLocator;
-
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * Represents reader interceptor chain executor for both client and server side.
@@ -131,7 +130,7 @@ public final class ReaderInterceptorExecutor extends InterceptorExecutor<ReaderI
         this.translateNce = translateNce;
         this.serviceLocator = serviceLocator;
 
-        final List<ReaderInterceptor> effectiveInterceptors = Lists.newArrayList(readerInterceptors);
+        final List<ReaderInterceptor> effectiveInterceptors = new ArrayList<>(readerInterceptors);
         effectiveInterceptors.add(new TerminalReaderInterceptor());
 
         this.interceptors = effectiveInterceptors.iterator();

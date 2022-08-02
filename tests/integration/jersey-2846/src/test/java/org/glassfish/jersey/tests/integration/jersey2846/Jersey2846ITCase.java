@@ -66,8 +66,6 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import jersey.repackaged.com.google.common.collect.Iterators;
-
 /**
  * JERSEY-2846 reproducer.
  *
@@ -146,13 +144,10 @@ public class Jersey2846ITCase extends JerseyTest {
     }
 
     private int matchingTempFiles(final String tempDir) throws IOException {
-        return Iterators.size(Files.newDirectoryStream(Paths.get(tempDir), new DirectoryStream.Filter<Path>() {
-            @Override
-            public boolean accept(final Path path) throws IOException {
-                final String name = path.getFileName().toString();
-                return (name.startsWith("rep") || name.startsWith("MIME"))
-                        && name.endsWith("tmp");
-            }
-        }).iterator());
+        return (int) Files.walk(Paths.get(tempDir)).filter(path -> {
+            final String name = path.getFileName().toString();
+            return (name.startsWith("rep") || name.startsWith("MIME"))
+                    && name.endsWith("tmp");
+        }).count();
     }
 }

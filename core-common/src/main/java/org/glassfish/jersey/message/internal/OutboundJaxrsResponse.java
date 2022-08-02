@@ -66,8 +66,6 @@ import javax.ws.rs.core.Variant;
 
 import org.glassfish.jersey.internal.LocalizationMessages;
 
-import jersey.repackaged.com.google.common.base.MoreObjects;
-
 /**
  * An outbound JAX-RS response message.
  *
@@ -304,14 +302,12 @@ public class OutboundJaxrsResponse extends javax.ws.rs.core.Response {
 
     @Override
     public String toString() {
-        return MoreObjects
-                .toStringHelper(this)
-                .add("status", status.getStatusCode())
-                .add("reason", status.getReasonPhrase())
-                .add("hasEntity", context.hasEntity())
-                .add("closed", closed)
-                .add("buffered", buffered)
-                .toString();
+        return "OutboundJaxrsResponse{"
+                + "status=" + status.getStatusCode()
+                + ", reason=" + status.getReasonPhrase()
+                + ", hasEntity=" + context.hasEntity()
+                + ", closed=" + closed
+                + ", buffered=" + buffered + "}";
     }
 
     /**

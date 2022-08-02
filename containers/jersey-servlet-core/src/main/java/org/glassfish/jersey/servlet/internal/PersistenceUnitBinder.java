@@ -42,6 +42,7 @@ package org.glassfish.jersey.servlet.internal;
 
 import java.lang.reflect.Proxy;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -59,7 +60,6 @@ import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
-import jersey.repackaged.com.google.common.collect.Maps;
 
 /**
  * {@link PersistenceUnit Persistence unit} injection binder.
@@ -76,7 +76,7 @@ public class PersistenceUnitBinder extends AbstractBinder {
     @Singleton
     private static class PersistenceUnitInjectionResolver implements InjectionResolver<PersistenceUnit> {
 
-        private final Map<String, String> persistenceUnits = Maps.newHashMap();
+        private final Map<String, String> persistenceUnits = new HashMap<>();
 
         @Inject
         private PersistenceUnitInjectionResolver(final ServiceLocator locator) {

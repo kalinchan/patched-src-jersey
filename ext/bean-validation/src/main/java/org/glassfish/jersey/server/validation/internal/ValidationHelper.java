@@ -43,18 +43,16 @@ package org.glassfish.jersey.server.validation.internal;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.ws.rs.core.Response;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ElementKind;
 import javax.validation.Path;
+import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.validation.ValidationError;
 
-import jersey.repackaged.com.google.common.base.Function;
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * Utility methods for Bean Validation processing.
@@ -72,19 +70,12 @@ public final class ValidationHelper {
      * @return list of validation errors (not {@code null}).
      */
     public static List<ValidationError> constraintViolationToValidationErrors(final ConstraintViolationException violation) {
-        return Lists.transform(Lists.newArrayList(violation.getConstraintViolations()),
-                new Function<ConstraintViolation<?>, ValidationError>() {
-
-                    @Override
-                    public ValidationError apply(final ConstraintViolation<?> violation) {
-                        return new ValidationError(
-                                violation.getMessage(),
-                                violation.getMessageTemplate(),
-                                getViolationPath(violation),
-                                getViolationInvalidValue(violation.getInvalidValue())
-                        );
-                    }
-                });
+        return violation.getConstraintViolations().stream().map(violation1 -> new ValidationError(
+                violation1.getMessage(),
+                violation1.getMessageTemplate(),
+                getViolationPath(violation1),
+                getViolationInvalidValue(violation1.getInvalidValue())
+        )).collect(Collectors.toList());
     }
 
     /**

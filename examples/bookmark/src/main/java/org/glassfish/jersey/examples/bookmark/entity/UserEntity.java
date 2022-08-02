@@ -52,8 +52,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import jersey.repackaged.com.google.common.base.MoreObjects;
-
 /**
  * Entity class UserEntity.
  *
@@ -245,7 +243,9 @@ public class UserEntity implements Serializable {
      */
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("userid", userid).toString();
+        return "UserEntity{"
+                + "userid='" + userid + '\''
+                + '}';
     }
 
 }

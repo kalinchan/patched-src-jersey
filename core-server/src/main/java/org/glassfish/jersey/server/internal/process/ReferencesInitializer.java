@@ -39,6 +39,8 @@
  */
 package org.glassfish.jersey.server.internal.process;
 
+import java.util.function.Function;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -46,8 +48,6 @@ import org.glassfish.jersey.internal.util.collection.Ref;
 import org.glassfish.jersey.server.spi.RequestScopedInitializer;
 
 import org.glassfish.hk2.api.ServiceLocator;
-
-import jersey.repackaged.com.google.common.base.Function;
 
 /**
  * Request/response scoped injection support initialization stage.

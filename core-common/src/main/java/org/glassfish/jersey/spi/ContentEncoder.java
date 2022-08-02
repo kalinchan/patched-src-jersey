@@ -46,6 +46,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
@@ -56,8 +57,6 @@ import javax.ws.rs.ext.WriterInterceptor;
 import javax.ws.rs.ext.WriterInterceptorContext;
 
 import javax.annotation.Priority;
-
-import jersey.repackaged.com.google.common.collect.Sets;
 
 /**
  * Standard contract for plugging in content encoding support. Provides a standard way of implementing encoding
@@ -81,7 +80,7 @@ public abstract class ContentEncoder implements ReaderInterceptor, WriterInterce
         if (supportedEncodings.length == 0) {
             throw new IllegalArgumentException();
         }
-        this.supportedEncodings = Collections.unmodifiableSet(Sets.newHashSet(Arrays.asList(supportedEncodings)));
+        this.supportedEncodings = Collections.unmodifiableSet(Arrays.stream(supportedEncodings).collect(Collectors.toSet()));
     }
 
     /**

@@ -56,8 +56,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.glassfish.jersey.message.MessageBodyWorkers;
 import org.glassfish.jersey.oauth1.signature.OAuth1Request;
 
-import jersey.repackaged.com.google.common.collect.Lists;
-
 /**
  * Implements the OAuth signature library Request interface, wrapping a Jersey
  * client request object.
@@ -124,7 +122,7 @@ class RequestWrapper implements OAuth1Request {
     @Override
     public List<String> getHeaderValues(final String name) {
 
-        ArrayList<String> list = Lists.newArrayList();
+        ArrayList<String> list = new ArrayList<>();
 
         for (String header : clientRequest.getStringHeaders().get(name)) {
             list.add(header);

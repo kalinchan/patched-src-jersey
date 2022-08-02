@@ -40,27 +40,23 @@
 
 package org.glassfish.jersey.tests.integration.jersey2794;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import javax.ws.rs.core.Application;
-
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.external.ExternalTestContainerFactory;
 import org.glassfish.jersey.test.spi.TestContainerException;
 import org.glassfish.jersey.test.spi.TestContainerFactory;
-
 import org.junit.Test;
+
+import javax.ws.rs.core.Application;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import jersey.repackaged.com.google.common.collect.Iterators;
 
 /**
  * JERSEY-2794 reproducer.
@@ -126,12 +122,9 @@ public class Jersey2794ITCase extends JerseyTest {
     }
 
     private int matchingTempFiles(final String tempDir) throws IOException {
-        return Iterators.size(Files.newDirectoryStream(Paths.get(tempDir), new DirectoryStream.Filter<Path>() {
-            @Override
-            public boolean accept(final Path path) throws IOException {
-                final String name = path.getFileName().toString();
-                return name.startsWith("MIME") && name.endsWith("tmp");
-            }
-        }).iterator());
+        return (int) Files.walk(Paths.get(tempDir)).filter(path -> {
+            final String name = path.getFileName().toString();
+            return name.startsWith("MIME") && name.endsWith("tmp");
+        }).count();
     }
 }

@@ -41,6 +41,7 @@
 package org.glassfish.jersey.server.model;
 
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -57,8 +58,6 @@ import org.glassfish.jersey.model.internal.CommonConfig;
 import org.glassfish.jersey.model.internal.ComponentBag;
 import org.glassfish.jersey.process.Inflector;
 import org.glassfish.jersey.server.internal.LocalizationMessages;
-
-import jersey.repackaged.com.google.common.collect.Sets;
 
 /**
  * Default {@link javax.ws.rs.core.Configuration configuration} for resource methods.
@@ -80,7 +79,7 @@ class ResourceMethodConfig extends CommonConfig {
 
     static {
         //noinspection unchecked
-        Set<Class<?>> tempSet = Sets.newIdentityHashSet();
+        Set<Class<?>> tempSet = Collections.newSetFromMap(new IdentityHashMap<>());
         tempSet.add(ContainerRequestFilter.class);
         tempSet.add(ContainerResponseFilter.class);
         tempSet.add(ReaderInterceptor.class);

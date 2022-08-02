@@ -58,7 +58,6 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.internal.util.Producer;
 import org.glassfish.jersey.process.internal.RequestScope;
 
-import jersey.repackaged.com.google.common.base.MoreObjects;
 
 /**
  * Implementation of an inbound client-side JAX-RS {@link Response} message.
@@ -256,10 +255,7 @@ class InboundJaxrsResponse extends Response {
 
     @Override
     public String toString() {
-        return MoreObjects
-                .toStringHelper(this)
-                .add("context", context)
-                .toString();
+        return "InboundJaxrsResponse{" + "context=" + context + "}";
     }
 
     private <T> T runInScopeIfPossible(Producer<T> producer) {

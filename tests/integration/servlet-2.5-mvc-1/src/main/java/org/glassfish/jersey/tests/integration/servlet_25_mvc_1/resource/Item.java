@@ -39,17 +39,14 @@
  */
 package org.glassfish.jersey.tests.integration.servlet_25_mvc_1.resource;
 
+import org.glassfish.jersey.server.mvc.Template;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.glassfish.jersey.server.mvc.Template;
-
-import jersey.repackaged.com.google.common.base.MoreObjects;
 
 @Template
 @Produces("text/html")
@@ -84,9 +81,9 @@ public class Item {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(Item.class)
-                .add("title", title)
-                .add("author", author)
-                .toString();
+        return "Item{"
+                + "title='" + title + '\''
+                + ", author='" + author + '\''
+                + '}';
     }
 }

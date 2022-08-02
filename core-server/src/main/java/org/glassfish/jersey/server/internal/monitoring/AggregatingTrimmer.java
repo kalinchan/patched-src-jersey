@@ -49,10 +49,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.glassfish.jersey.internal.guava.TreeMultimap;
+
 import static org.glassfish.jersey.server.internal.monitoring.ReservoirConstants.COLLISION_BUFFER_POWER;
-
-import jersey.repackaged.com.google.common.collect.TreeMultimap;
-
 /**
  * An aggregating trimmer for sliding window measurements. This trimmer updates registered time reservoirs with the aggregated
  * measurements for the values it trimmed.

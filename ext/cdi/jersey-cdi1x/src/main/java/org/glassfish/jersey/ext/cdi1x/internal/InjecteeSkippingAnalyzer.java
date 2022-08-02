@@ -48,10 +48,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.glassfish.jersey.internal.util.collection.Views;
+
 import org.glassfish.hk2.api.ClassAnalyzer;
 import org.glassfish.hk2.api.MultiException;
-
-import jersey.repackaged.com.google.common.collect.Sets;
 
 /**
  * Class analyzer that ignores given injection points.
@@ -82,14 +82,14 @@ public final class InjecteeSkippingAnalyzer implements ClassAnalyzer {
     public <T> Set<Method> getInitializerMethods(Class<T> type) throws MultiException {
         final Set<Method> originalMethods = defaultAnalyzer.getInitializerMethods(type);
         final Set<Method> skippedMethods = getMembersToSkip(type, methodsToSkip);
-        return Sets.difference(originalMethods, skippedMethods);
+        return Views.setDiffView(originalMethods, skippedMethods);
     }
 
     @Override
     public <T> Set<Field> getFields(Class<T> type) throws MultiException {
         final Set<Field> originalFields = defaultAnalyzer.getFields(type);
         final Set<Field> skippedFields = getMembersToSkip(type, fieldsToSkip);
-        return Sets.difference(originalFields, skippedFields);
+        return Views.setDiffView(originalFields, skippedFields);
     }
 
     @Override

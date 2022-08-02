@@ -54,8 +54,6 @@ import javax.inject.Singleton;
 import org.glassfish.jersey.internal.util.Tokenizer;
 import org.glassfish.jersey.message.filtering.spi.ScopeResolver;
 
-import jersey.repackaged.com.google.common.collect.Sets;
-
 @Singleton
 public class SelectableScopeResolver implements ScopeResolver {
 
@@ -102,7 +100,7 @@ public class SelectableScopeResolver implements ScopeResolver {
     }
 
     private Set<String> getScopesForField(final String fieldName) {
-        final Set<String> scopes = Sets.newHashSet();
+        final Set<String> scopes = new HashSet<>();
 
         // add specific scope in case of specific request
         final String[] fields = Tokenizer.tokenize(fieldName, ",");

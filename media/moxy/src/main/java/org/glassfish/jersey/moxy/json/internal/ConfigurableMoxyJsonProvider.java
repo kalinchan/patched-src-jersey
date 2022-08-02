@@ -44,6 +44,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.security.AccessController;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,9 +70,6 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
 
-import jersey.repackaged.com.google.common.collect.Maps;
-import jersey.repackaged.com.google.common.collect.Sets;
-
 /**
  * Jersey specific {@link MOXyJsonProvider} that can be configured via {@code ContextResolver<JsonMoxyConfiguration>} instance.
  *
@@ -88,7 +87,7 @@ public class ConfigurableMoxyJsonProvider extends MOXyJsonProvider {
     }
 
     private static Set<String> getPropertyNames(final Class<?> propertiesClass) {
-        final Set<String> propertyNames = Sets.newHashSet();
+        final Set<String> propertyNames = new HashSet<>();
 
         for (final Field field : AccessController.doPrivileged(ReflectionHelper.getDeclaredFieldsPA(propertiesClass))) {
             if (String.class == field.getType()
@@ -122,7 +121,7 @@ public class ConfigurableMoxyJsonProvider extends MOXyJsonProvider {
     }
 
     private Map<String, Object> getConfigProperties(final Configuration config, final Set<String> propertyNames) {
-        final Map<String, Object> properties = Maps.newHashMap();
+        final Map<String, Object> properties = new HashMap<>();
 
         for (final String propertyName : propertyNames) {
             final Object property = config.getProperty(propertyName);
@@ -165,7 +164,7 @@ public class ConfigurableMoxyJsonProvider extends MOXyJsonProvider {
     }
 
     private Map<String, Object> getProperties(final boolean forMarshaller) {
-        final Map<String, Object> properties = Maps.newHashMap(forMarshaller
+        final Map<String, Object> properties = new HashMap<>(forMarshaller
                 ? getGlobalConfig().getMarshallerProperties()
                 : getGlobalConfig().getUnmarshallerProperties());
 

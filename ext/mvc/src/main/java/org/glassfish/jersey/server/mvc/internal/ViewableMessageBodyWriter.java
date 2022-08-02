@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -75,8 +76,6 @@ import org.glassfish.jersey.server.mvc.spi.ViewableContext;
 import org.glassfish.jersey.server.mvc.spi.ViewableContextException;
 
 import org.glassfish.hk2.api.ServiceLocator;
-
-import jersey.repackaged.com.google.common.collect.Sets;
 
 /**
  * {@link javax.ws.rs.ext.MessageBodyWriter Message body writer} for {@link org.glassfish.jersey.server.mvc.Viewable viewable}
@@ -210,7 +209,7 @@ final class ViewableMessageBodyWriter implements MessageBodyWriter<Viewable> {
      * @return set of template processors.
      */
     private Set<TemplateProcessor> getTemplateProcessors() {
-        final Set<TemplateProcessor> templateProcessors = Sets.newLinkedHashSet();
+        final Set<TemplateProcessor> templateProcessors = new LinkedHashSet<>();
 
         templateProcessors.addAll(Providers.getCustomProviders(serviceLocator, TemplateProcessor.class));
         templateProcessors.addAll(Providers.getProviders(serviceLocator, TemplateProcessor.class));

@@ -45,6 +45,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -68,9 +69,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
-import jersey.repackaged.com.google.common.base.Function;
-import jersey.repackaged.com.google.common.collect.Lists;
-
 /**
  * @author Michal Gajdos
  */
@@ -85,13 +83,7 @@ public class HeadTest extends JerseyContainerTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<TestContainerFactory[]> parameters() throws Exception {
-        return Lists.transform(FACTORIES, new Function<TestContainerFactory, TestContainerFactory[]>() {
-
-            @Override
-            public TestContainerFactory[] apply(final TestContainerFactory input) {
-                return new TestContainerFactory[]{input};
-            }
-        });
+        return FACTORIES.stream().map(input -> new TestContainerFactory[]{input}).collect(Collectors.toList());
     }
 
     @Path("/")

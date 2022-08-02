@@ -51,6 +51,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -74,6 +76,7 @@ import org.glassfish.jersey.message.internal.AcceptableLanguageTag;
 import org.glassfish.jersey.message.internal.AcceptableMediaType;
 import org.glassfish.jersey.message.internal.HttpHeaderReader;
 import org.glassfish.jersey.message.internal.InboundMessageContext;
+import org.glassfish.jersey.message.internal.LanguageTag;
 import org.glassfish.jersey.message.internal.MatchingEntityTag;
 import org.glassfish.jersey.message.internal.OutboundJaxrsResponse;
 import org.glassfish.jersey.message.internal.TracingAwarePropertiesDelegate;
@@ -89,10 +92,6 @@ import org.glassfish.jersey.server.spi.ContainerResponseWriter;
 import org.glassfish.jersey.server.spi.RequestScopedInitializer;
 import org.glassfish.jersey.uri.UriComponent;
 import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
-
-import jersey.repackaged.com.google.common.base.Function;
-import jersey.repackaged.com.google.common.base.Preconditions;
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * Jersey container request context.
@@ -554,23 +553,14 @@ public class ContainerRequest extends InboundMessageContext
 
     @Override
     public List<MediaType> getAcceptableMediaTypes() {
-        return Lists.transform(getQualifiedAcceptableMediaTypes(), new Function<AcceptableMediaType, MediaType>() {
-            @Override
-            public MediaType apply(final AcceptableMediaType input) {
-                return input;
-            }
-        });
+        return getQualifiedAcceptableMediaTypes().stream()
+                .map((Function<AcceptableMediaType, MediaType>) input -> input)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Locale> getAcceptableLanguages() {
-        return Lists.transform(getQualifiedAcceptableLanguages(), new Function<AcceptableLanguageTag, Locale>() {
-
-            @Override
-            public Locale apply(final AcceptableLanguageTag input) {
-                return input.getAsLocale();
-            }
-        });
+        return getQualifiedAcceptableLanguages().stream().map(LanguageTag::getAsLocale).collect(Collectors.toList());
     }
 
     // JAX-RS request

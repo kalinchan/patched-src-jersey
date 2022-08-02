@@ -46,15 +46,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Variant;
 
 import org.glassfish.jersey.internal.util.collection.Ref;
-
-import jersey.repackaged.com.google.common.base.Function;
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * Utility for selecting variant that best matches request from a list of variants.
@@ -355,12 +353,9 @@ public final class VariantSelector {
             if (!varyValue.isEmpty()) {
                 varyHeaderValue.set(varyValue);
             }
-            return Lists.transform(vhs, new Function<VariantHolder, Variant>() {
-                @Override
-                public Variant apply(final VariantHolder holder) {
-                    return holder.v;
-                }
-            });
+            return vhs.stream()
+                    .map(variantHolder -> variantHolder.v)
+                    .collect(Collectors.toList());
         }
     }
 }

@@ -57,6 +57,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import javax.annotation.Priority;
 
 import javax.ws.rs.ConstrainedTo;
@@ -74,11 +76,6 @@ import org.glassfish.hk2.api.ActiveDescriptor;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.ServiceHandle;
 import org.glassfish.hk2.api.ServiceLocator;
-
-import jersey.repackaged.com.google.common.base.Function;
-import jersey.repackaged.com.google.common.collect.Collections2;
-import jersey.repackaged.com.google.common.collect.Lists;
-import jersey.repackaged.com.google.common.collect.Sets;
 
 /**
  * Utility class providing a set of utility methods for easier and more type-safe
@@ -267,16 +264,10 @@ public final class Providers {
     @SuppressWarnings("TypeMayBeWeakened")
     public static <T> Iterable<T> sortRankedProviders(final RankedComparator<T> comparator,
                                                       final Iterable<RankedProvider<T>> providers) {
-        final List<RankedProvider<T>> rankedProviders = Lists.newArrayList(providers);
-
-        Collections.sort(rankedProviders, comparator);
-
-        return Collections2.transform(rankedProviders, new Function<RankedProvider<T>, T>() {
-            @Override
-            public T apply(final RankedProvider<T> input) {
-                return input.getProvider();
-            }
-        });
+        return StreamSupport.stream(providers.spliterator(), false)
+                .sorted(comparator)
+                .map(RankedProvider::getProvider)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -291,20 +282,11 @@ public final class Providers {
     @SuppressWarnings("TypeMayBeWeakened")
     public static <T> Iterable<T> mergeAndSortRankedProviders(final RankedComparator<T> comparator,
                                                               final Iterable<Iterable<RankedProvider<T>>> providerIterables) {
-        final List<RankedProvider<T>> rankedProviders = Lists.newArrayList();
-
-        for (final Iterable<RankedProvider<T>> providers : providerIterables) {
-            rankedProviders.addAll(Lists.<RankedProvider<T>>newLinkedList(providers));
-        }
-
-        Collections.sort(rankedProviders, comparator);
-
-        return Collections2.transform(rankedProviders, new Function<RankedProvider<T>, T>() {
-            @Override
-            public T apply(final RankedProvider<T> input) {
-                return input.getProvider();
-            }
-        });
+        return StreamSupport.stream(providerIterables.spliterator(), false)
+                .flatMap(rankedProviders -> StreamSupport.stream(rankedProviders.spliterator(), false))
+                .sorted(comparator)
+                .map(RankedProvider::getProvider)
+                .collect(Collectors.toList());
     }
 
     /**

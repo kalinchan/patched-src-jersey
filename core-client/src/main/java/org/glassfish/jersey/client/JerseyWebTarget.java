@@ -48,7 +48,7 @@ import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-import jersey.repackaged.com.google.common.base.Preconditions;
+import org.glassfish.jersey.internal.guava.Preconditions;
 
 /**
  * Jersey implementation of {@link javax.ws.rs.client.WebTarget JAX-RS client target}

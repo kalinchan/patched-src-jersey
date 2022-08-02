@@ -50,6 +50,8 @@
  */
 package org.glassfish.jersey.server.model;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.glassfish.jersey.Severity;
@@ -58,8 +60,6 @@ import org.glassfish.jersey.message.MessageBodyWorkers;
 import org.glassfish.jersey.server.model.internal.ModelErrors;
 
 import org.glassfish.hk2.api.ServiceLocator;
-
-import jersey.repackaged.com.google.common.collect.Lists;
 
 /**
  * A resource model validator that checks the given resource model.
@@ -89,10 +89,10 @@ import jersey.repackaged.com.google.common.collect.Lists;
  */
 public final class ComponentModelValidator {
 
-    private final List<ResourceModelIssue> issueList = Lists.newLinkedList();
+    private final List<ResourceModelIssue> issueList = new LinkedList<>();
 
     public ComponentModelValidator(ServiceLocator locator) {
-        validators = Lists.newArrayList();
+        validators = new ArrayList<>();
         validators.add(new ResourceValidator());
         validators.add(new RuntimeResourceModelValidator(locator.getService(MessageBodyWorkers.class)));
         validators.add(new ResourceMethodValidator(locator));

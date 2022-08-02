@@ -39,11 +39,11 @@
  */
 package org.glassfish.jersey.server.internal.process;
 
+import java.util.function.Function;
+
 import org.glassfish.jersey.process.internal.ChainableStage;
 import org.glassfish.jersey.process.internal.Stage;
 import org.glassfish.jersey.server.ContainerResponse;
-
-import jersey.repackaged.com.google.common.base.Function;
 
 /**
  * Context that can be used during the data processing for registering response

@@ -42,7 +42,7 @@ package org.glassfish.jersey.internal.inject;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.ServiceHandle;
 
-import jersey.repackaged.com.google.common.base.Function;
+import java.util.function.Function;
 
 
 /**

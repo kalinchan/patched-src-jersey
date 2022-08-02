@@ -42,6 +42,7 @@ package org.glassfish.jersey.message.filtering;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.core.SecurityContext;
@@ -52,8 +53,6 @@ import javax.annotation.security.RolesAllowed;
 
 import org.glassfish.jersey.message.filtering.spi.FilteringHelper;
 
-import jersey.repackaged.com.google.common.collect.Sets;
-
 /**
  * Utility methods for security Entity Data Filtering.
  *
@@ -61,7 +60,7 @@ import jersey.repackaged.com.google.common.collect.Sets;
  */
 final class SecurityHelper {
 
-    private static final Set<String> roles = Sets.newHashSet();
+    private static final Set<String> roles = new HashSet<>();
 
     /**
      * Get entity-filtering scopes of security annotations present among given annotations.
@@ -102,7 +101,7 @@ final class SecurityHelper {
 
         for (final Annotation annotation : annotations) {
             if (annotation instanceof RolesAllowed) {
-                final Set<String> bindings = Sets.newHashSet();
+                final Set<String> bindings = new HashSet<>();
 
                 for (final String role : ((RolesAllowed) annotation).value()) {
                     if (securityContext == null || securityContext.isUserInRole(role)) {

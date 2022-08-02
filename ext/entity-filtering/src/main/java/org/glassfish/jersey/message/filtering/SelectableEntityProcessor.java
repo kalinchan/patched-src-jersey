@@ -40,6 +40,7 @@
 package org.glassfish.jersey.message.filtering;
 
 import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Priority;
@@ -49,8 +50,6 @@ import org.glassfish.jersey.message.filtering.spi.AbstractEntityProcessor;
 import org.glassfish.jersey.message.filtering.spi.EntityGraph;
 import org.glassfish.jersey.message.filtering.spi.EntityProcessor;
 
-import jersey.repackaged.com.google.common.collect.Sets;
-
 @Singleton
 @Priority(Integer.MAX_VALUE - 5000)
 public class SelectableEntityProcessor extends AbstractEntityProcessor {
@@ -59,7 +58,7 @@ public class SelectableEntityProcessor extends AbstractEntityProcessor {
                              final Annotation[] annotations, final EntityGraph graph) {
 
         if (fieldName != null) {
-            final Set<String> scopes = Sets.newHashSet();
+            final Set<String> scopes = new HashSet<>();
 
             // add default selectable scope in case of none requested
             scopes.add(SelectableScopeResolver.DEFAULT_SCOPE);
