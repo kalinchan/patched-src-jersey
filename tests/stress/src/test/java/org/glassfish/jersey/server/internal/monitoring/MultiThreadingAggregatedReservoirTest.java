@@ -51,7 +51,7 @@ public class MultiThreadingAggregatedReservoirTest {
     /**
      * Note that more than 5 seconds may require more than 1G heap memory.
      */
-    private static final int TEST_DURATION_MILLIS = 10_000;
+    private static final int TEST_DURATION_MILLIS = 5_000;
     private static final int SHUTDOWN_TIMEOUT_SECONDS = 120;
     private static final double DELTA = 0.0001;
 
